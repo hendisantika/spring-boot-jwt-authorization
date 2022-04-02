@@ -35,4 +35,13 @@ public class ProductService {
     public Product getProductById(long id) {
         return productMap.get(id);
     }
+
+    public void addProduct(Product product) {
+        if (productMap.values().stream().anyMatch(p -> p.getName().equals(product.getName()))) {
+            throw new IllegalArgumentException(String.format("Product with name %s already exists", product.getName()));
+        }
+
+        product.setId(idCounter.incrementAndGet());
+        productMap.put(product.getId(), product);
+    }
 }
