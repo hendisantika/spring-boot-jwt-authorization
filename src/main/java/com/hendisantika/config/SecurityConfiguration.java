@@ -6,8 +6,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.stereotype.Component;
 
 /**
@@ -62,5 +66,45 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.oauth2ResourceServer()
                 .jwt()
                 .jwtAuthenticationConverter(authenticationConverter());
+    }
+
+    @Bean
+    @Override
+    protected UserDetailsService userDetailsService() {
+        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+
+        UserDetails user1 = User
+                .withUsername("user1")
+                .authorities("ADMIN", "STAFF_MEMBER")
+                .passwordEncoder(passwordEncoder::encode)
+                .password("1234")
+                .build();
+        manager.createUser(user1);
+
+        UserDetails user2 = User
+                .withUsername("user2")
+                .authorities("STAFF_MEMBER")
+                .passwordEncoder(passwordEncoder::encode)
+                .password("1234")
+                .build();
+        manager.createUser(user2);
+
+        UserDetails user3 = User
+                .withUsername("user3")
+                .authorities("ASSISTANT_MANAGER", "STAFF_MEMBER")
+                .passwordEncoder(passwordEncoder::encode)
+                .password("1234")
+                .build();
+        manager.createUser(user3);
+
+        UserDetails user4 = User
+                .withUsername("user4")
+                .authorities("MANAGER", "STAFF_MEMBER")
+                .passwordEncoder(passwordEncoder::encode)
+                .password("1234")
+                .build();
+        manager.createUser(user4);
+
+        return manager;
     }
 }
