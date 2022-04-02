@@ -2,7 +2,15 @@ package com.hendisantika.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -28,4 +36,19 @@ public class JwtConfiguration {
 
     @Value("${app.security.jwt.private-key-passphrase}")
     private String privateKeyPassphrase;
+
+    @Bean
+    public KeyStore keyStore() {
+        try {
+            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            InputStream resourceAsStream =
+                    Thread.currentThread().getContextClassLoader().getResourceAsStream(keyStorePath);
+            keyStore.load(resourceAsStream, keyStorePassword.toCharArray());
+            return keyStore;
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException e) {
+            log.error("Unable to load keystore: {}", keyStorePath, e);
+        }
+
+        throw new IllegalArgumentException("Unable to load keystore");
+    }
 }
