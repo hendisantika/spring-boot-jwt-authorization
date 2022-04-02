@@ -37,3 +37,15 @@ An example of role based access control.
 - `/login` -> Public endpoint which returns a signed JWT for valid user credentials (username/password)
 - `/products` -> Contains several endpoints to add and remove product entities. Protected by JWT authentication and
   authorized based on role.
+
+## Create Keystore PKCS13
+
+```shell
+keytool -genkey -alias jwtsigning \
+    -keystore keystore.jks \
+    -storetype PKCS12 \
+    -keyalg RSA \
+    -storepass password \
+    -validity 730 \
+    -keysize 4096 
+```
