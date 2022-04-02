@@ -44,4 +44,12 @@ public class ProductService {
         product.setId(idCounter.incrementAndGet());
         productMap.put(product.getId(), product);
     }
+
+    public void deleteProductById(long id) {
+        if (!productMap.containsKey(id)) {
+            throw new IllegalArgumentException(String.format("Product with id %d doesn't exist", id));
+        }
+
+        productMap.remove(id);
+    }
 }
