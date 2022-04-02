@@ -7,10 +7,13 @@ import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.Key;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
+import java.security.interfaces.RSAPrivateKey;
 
 /**
  * Created by IntelliJ IDEA.
@@ -50,5 +53,19 @@ public class JwtConfiguration {
         }
 
         throw new IllegalArgumentException("Unable to load keystore");
+    }
+
+    @Bean
+    public RSAPrivateKey jwtSigningKey(KeyStore keyStore) {
+        try {
+            Key key = keyStore.getKey(keyAlias, privateKeyPassphrase.toCharArray());
+            if (key instanceof RSAPrivateKey) {
+                return (RSAPrivateKey) key;
+            }
+        } catch (UnrecoverableKeyException | NoSuchAlgorithmException | KeyStoreException e) {
+            log.error("Unable to load private key from keystore: {}", keyStorePath, e);
+        }
+
+        throw new IllegalArgumentException("Unable to load private key");
     }
 }
