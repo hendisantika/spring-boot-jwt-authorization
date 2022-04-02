@@ -11,9 +11,12 @@ import java.security.Key;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
 import java.security.UnrecoverableKeyException;
+import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 
 /**
  * Created by IntelliJ IDEA.
@@ -67,5 +70,21 @@ public class JwtConfiguration {
         }
 
         throw new IllegalArgumentException("Unable to load private key");
+    }
+
+    @Bean
+    public RSAPublicKey jwtValidationKey(KeyStore keyStore) {
+        try {
+            Certificate certificate = keyStore.getCertificate(keyAlias);
+            PublicKey publicKey = certificate.getPublicKey();
+
+            if (publicKey instanceof RSAPublicKey) {
+                return (RSAPublicKey) publicKey;
+            }
+        } catch (KeyStoreException e) {
+            log.error("Unable to load private key from keystore: {}", keyStorePath, e);
+        }
+
+        throw new IllegalArgumentException("Unable to load RSA public key");
     }
 }
