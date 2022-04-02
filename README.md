@@ -15,22 +15,22 @@ This approach is ideal to be used as the
 
 ## Solution Overview
 
-![Solution Overview](https://github.com/IMS94/spring-boot-jwt-authorization/blob/master/authorization_process.png?raw=true "Solution Overview")
+![Solution Overview](img/authorization_process.png "Solution Overview")
 
 ## Role Based Access Control
 
 An example of role based access control.
 
-![RBAC Example](https://github.com/IMS94/spring-boot-jwt-authorization/blob/master/rbac_sample.png?raw=true "Solution Overview")
+![RBAC Example](img/rbac_sample.png "Solution Overview")
 
 ## JWT Authentication Overview
 
-![Solution Overview](https://github.com/IMS94/spring-boot-jwt-authorization/blob/master/solution_overview.png?raw=true "Solution Overview")
+![Solution Overview](img/solution_overview.png "Solution Overview")
 
 ## Getting Started
 
 - Use `mvn clean install` in the project root directory to build the project.
-- Run the main class, `com.example.springboot.jwt.JwtApplication` to start the application.
+- Run the main class, `com.hendisantika.springboot.jwt.JwtApplication` to start the application.
 
 ## Endpoints
 
