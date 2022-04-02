@@ -12,7 +12,7 @@
     <artifactId>spring-boot-jwt-authorization</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-boot-jwt-authorization</name>
-    <description>spring-boot-jwt-authorization</description>
+    <description>Stateless JWT authentication with Spring Boot</description>
     <properties>
         <java.version>11</java.version>
     </properties>
@@ -21,7 +21,19 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>3.11.0</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
