@@ -1,7 +1,7 @@
 package com.hendisantika.controller;
 
 import com.hendisantika.config.JwtHelper;
-import com.hendisantika.config.SecurityConfiguration;
+import com.hendisantika.config.WebSecurityConfig;
 import com.hendisantika.controller.resource.LoginResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -63,7 +63,7 @@ public class AuthController {
             String authorities = userDetails.getAuthorities().stream()
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.joining(" "));
-            claims.put(SecurityConfiguration.AUTHORITIES_CLAIM_NAME, authorities);
+            claims.put(WebSecurityConfig.AUTHORITIES_CLAIM_NAME, authorities);
             claims.put("userId", String.valueOf(1));
 
             String jwt = jwtHelper.createJwtForClaims(username, claims);
