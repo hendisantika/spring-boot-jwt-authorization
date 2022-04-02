@@ -4,6 +4,8 @@ import com.hendisantika.entity.Product;
 import com.hendisantika.service.ProductService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,5 +34,11 @@ public class ProductController {
     @PreAuthorize("hasAuthority('STAFF_MEMBER')")
     public Collection<Product> getProducts() {
         return productService.getAllProducts();
+    }
+
+    @PostMapping
+    @PreAuthorize("hasAnyAuthority('ASSISTANT_MANAGER', 'MANAGER', 'ADMIN')")
+    public void addProduct(@RequestBody Product product) {
+        productService.addProduct(product);
     }
 }
