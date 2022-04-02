@@ -3,6 +3,7 @@ package com.hendisantika.service;
 import com.hendisantika.entity.Product;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -27,4 +28,7 @@ public class ProductService {
         addProduct(new Product("Second Product", "Second Product Description"));
     }
 
+    public Collection<Product> getAllProducts() {
+        return productMap.values();
+    }
 }
