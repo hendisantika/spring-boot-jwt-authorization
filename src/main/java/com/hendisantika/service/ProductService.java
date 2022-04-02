@@ -31,4 +31,8 @@ public class ProductService {
     public Collection<Product> getAllProducts() {
         return productMap.values();
     }
+
+    public Product getProductById(long id) {
+        return productMap.get(id);
+    }
 }
