@@ -2,8 +2,11 @@ package com.hendisantika.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,8 +17,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * Date: 02/04/22
  * Time: 18.41
  */
+@Component
+@EnableGlobalMethodSecurity(
+        prePostEnabled = true
+)
 @Configuration
-public class SecurityConfiguration {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    public static final String AUTHORITIES_CLAIM_NAME = "roles";
+
+    private final PasswordEncoder passwordEncoder;
+
+    public SecurityConfiguration(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
