@@ -49,3 +49,17 @@ keytool -genkey -alias jwtsigning \
     -validity 730 \
     -keysize 4096 
 ```
+
+### Request Sample
+
+Login API
+
+```shell
+curl --location --request POST 'http://localhost:8080/login' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+   "username": "user1",
+   "password": "1234"
+}'
+```
+
