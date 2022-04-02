@@ -3,8 +3,8 @@ package com.hendisantika.controller;
 import com.hendisantika.config.JwtHelper;
 import com.hendisantika.config.WebSecurityConfig;
 import com.hendisantika.controller.resource.LoginResult;
+import com.hendisantika.dto.LoginDTO;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -44,21 +44,18 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PostMapping(path = "login", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
-    public LoginResult login(
-            @RequestParam String username,
-            @RequestParam String password) {
-
+    @PostMapping(path = "login")
+    public LoginResult login(@RequestBody LoginDTO loginDTO) {
         UserDetails userDetails;
         try {
-            userDetails = userDetailsService.loadUserByUsername(username);
+            userDetails = userDetailsService.loadUserByUsername(loginDTO.getUsername());
         } catch (UsernameNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
 
-        if (passwordEncoder.matches(password, userDetails.getPassword())) {
+        if (passwordEncoder.matches(loginDTO.getPassword(), userDetails.getPassword())) {
             Map<String, String> claims = new HashMap<>();
-            claims.put("username", username);
+            claims.put("username", loginDTO.getUsername());
 
             String authorities = userDetails.getAuthorities().stream()
                     .map(GrantedAuthority::getAuthority)
@@ -66,7 +63,7 @@ public class AuthController {
             claims.put(WebSecurityConfig.AUTHORITIES_CLAIM_NAME, authorities);
             claims.put("userId", String.valueOf(1));
 
-            String jwt = jwtHelper.createJwtForClaims(username, claims);
+            String jwt = jwtHelper.createJwtForClaims(loginDTO.getUsername(), claims);
             return new LoginResult(jwt);
         }
 
